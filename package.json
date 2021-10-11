@@ -1,0 +1,30 @@
+{
+  "name": "form_validation",
+  "version": "1.0.0",
+  "description": "## Directions",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xxblincolnxx/form_validation.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xxblincolnxx/form_validation/issues"
+  },
+  "homepage": "https://github.com/xxblincolnxx/form_validation#readme",
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.4.1"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.15.8"
+  }
+}
