@@ -1,0 +1,49 @@
+/* GLOBALS */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+img {
+  max-width:100%;
+}
+
+/* OVERRIDES */
+h1 {
+  font-weight: bold;
+  font-size: 2rem;
+}
+.invisible {
+  display: none;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+input {
+  border-color: black;
+  border-width: .5px;
+  margin: 2px;
+  padding: 2px;
+  border-radius: 5px;
+}
+
+button {
+  border-radius: 5px;
+  margin: 2px;
+  padding: 2px;
+}
+
+.input-field {
+  padding: 5px;
+}
+
+.warn {
+  background-color: rgba(255, 0, 0, 0.6);
+}
+
+.bad-entry {
+  background-color: rgba(255, 153, 0, 0.6);
+}

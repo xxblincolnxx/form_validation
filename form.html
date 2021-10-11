@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Form Validation</title>
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" defer>
+</head>
+
+<body>
+  <div class="container" style="max-width: 500px">
+    <h1>Pre-paid Parking Form</h1>
+    <!-- DISPLAY ERRORS -->
+    <div id="error-box" class="invisible errors">
+      <ul id="error-list">
+
+      </ul>
+    </div>
+
+    <form id="form">
+      <!-- NAME FIELD -->
+      <div class="input-field grid grid-cols-2" id="name-field">
+        <label for="name">Name</label>
+        <input id="name" type="text" class="validate">
+      </div>
+
+      <!-- CAR INFO -->
+      <div class="input-field grid grid-cols-4">
+        <label for="car-year">Car</label>
+        <input id="car-year" type="text" placeholder="Year" class="validate">
+        <input id="car-make" type="text" placeholder="Make" class="validate">
+        <input id="car-model" type="text" placeholder="Model" class="validate">
+      </div>
+
+      <!-- DATE RANGE-->
+      <div class="input-field grid grid-cols-2" id="start-date-field">
+        <label for="start-date">Date parking</label>
+        <input id="start-date" type="date" class="validate">
+      </div>
+
+      <!-- DURATION OF PERMIT-->
+      <div class="input-field grid grid-cols-2" id="days-field">
+        <label for="duration">Permit Duration (days)</label>
+        <input id="duration" type="text" class="validate">
+      </div>
+
+      <!-- CC INFO -->
+      <div class="input-field grid grid-cols-2" id="credit-card-field">
+        <label for="credit-card">Credit Card</label>
+        <input id="credit-card" type="text" class="validate">
+      </div>
+
+      <div class="grid grid-cols-2">
+        <div class="input-field grid grid-cols-2" id="cvv-field">
+          <label for="cvv">CVV</label>
+          <input id="cvv" type="text" class="validate">
+        </div>
+        <div class="input-field grid grid-cols-2" id="expiration-field">
+          <label for="expiration">Expiration</label>
+          <input id="expiration" type="text" placeholder="MM/YY" class="validate">
+        </div>
+      </div>
+
+      <div id="total"></div>
+
+      <button
+        class="bg-purple-500 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50"
+        id="submit" type="submit">Make reservation</button>
+
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+      integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="script.js" defer></script>
+</body>
+
+</html>
