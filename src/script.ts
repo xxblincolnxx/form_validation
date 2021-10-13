@@ -1,21 +1,14 @@
-/* global moment */
+import moment from "moment"
 
 const form: HTMLFormElement | null = document.querySelector('#form')
 
+type FormNodes = {
+  [key: string]: HTMLInputElement | null,
+}
 // DOM Node Anchors and main listener
 if(form) {
   form.addEventListener('submit', (e) => {
-    interface FormNodes {
-      nameField: HTMLInputElement | null,
-      carYear: HTMLInputElement| null,
-      carMake: HTMLInputElement| null,
-      carModel: HTMLInputElement| null,
-      startDate: HTMLInputElement| null,
-      duration: HTMLInputElement| null,
-      creditCard: HTMLInputElement| null,
-      ccv: HTMLInputElement| null,
-      expiration: HTMLInputElement| null
-    }
+
     const inputNodes: FormNodes = {
       nameField: document.querySelector('#name'),
       carYear: document.querySelector('#car-year'),
@@ -38,7 +31,7 @@ if(form) {
       console.log(errorsSet)
     } else if (inputNodes.duration && inputNodes.startDate){
       e.preventDefault()
-      const cost: number = calculateCost(inputNodes.duration.value, inputNodes.startDate.value)
+      const cost: number = calculateCost(parseInt(inputNodes.duration.value), inputNodes.startDate.value)
       setDisplay([`Total: $${cost}`])
       console.log(cost)
     }
@@ -46,63 +39,62 @@ if(form) {
 }
 
 // UI Modifiers
-function invalidatedClass (node) {
+function invalidatedClass (node: HTMLInputElement) {
   return node.classList.contains('warn') ? console.log('already marked') : node.classList.add('warn')
 }
 
-function badEntryClass (node) {
+function badEntryClass (node: HTMLInputElement) {
   return node.classList.contains('bad-entry') ? console.log('already marked') : node.classList.add('bad-entry')
 }
 
-function removeWarnings (allNodes) {
+function removeWarnings (allNodes: FormNodes) {
   for (const node in allNodes) {
-    if (allNodes[node].classList.contains('warn')) {
-      allNodes[node].classList.remove('warn')
+    if (allNodes[node]!.classList.contains('warn')) {
+      allNodes[node]!.classList.remove('warn')
     }
-
-    if (allNodes[node].classList.contains('bad-entry')) {
-      allNodes[node].classList.remove('bad-entry')
+    if (allNodes[node]!.classList.contains('bad-entry')) {
+      allNodes[node]!.classList.remove('bad-entry')
     }
   }
 }
 
-function setDisplay (errorsSet) {
+function setDisplay (errorsSet: string[]) {
   const list = document.querySelector('#error-list')
   const container = document.querySelector('#error-box')
 
-  list.innerHTML = ''
+  list!.innerHTML = ''
   let listItems = ''
   for (const error of errorsSet) {
     listItems += `<li>${error}</li>`
   }
-  list.innerHTML = listItems
-  container.classList.remove('invisible')
+  list!.innerHTML = listItems
+  container!.classList.remove('invisible')
 }
 
 // INDIVIDUAL VALIDATION FUNCTIONS
-function checkEmpties (nodes) {
+function checkEmpties (nodes: FormNodes) {
   const err = []
   for (const node in nodes) {
-    if (nodes[node].value === '') {
-      invalidatedClass(nodes[node])
+    if (nodes[node]!.value === '') {
+      invalidatedClass(nodes[node]!)
       err.push('All Fields Required')
     }
   }
   return err
 }
 
-function checkYear (carYear) {
+function checkYear (carYear: HTMLInputElement) {
   // Must be Number, After 1900, Not Future
-  const value = carYear.value
+  const value: number = parseInt(carYear.value)
   const thisYear = moment().format('YYYY')
-  const err = []
+  const err: string[] = []
   let msg = ''
 
-  if (value === '') {
+  if (carYear.value === '') {
     return err
   }
 
-  if (isNaN(carYear.value)) {
+  if (isNaN(value)) {
     msg += 'Car Year Must be a Numerical Value'
   } else if (value < 1900 || value > parseInt(thisYear)) {
     msg === '' ? msg = `Car Year Must be Between 1900 and ${thisYear}` : msg += ` Between 1900 and ${thisYear}`
@@ -115,10 +107,10 @@ function checkYear (carYear) {
   return err
 }
 
-function checkDate (startDate) {
+function checkDate (startDate: HTMLInputElement) {
   // Must be future date
-  const err = []
-  const enteredDate = startDate.value
+  const err: string[] = []
+  const enteredDate: string = startDate.value
 
   if (enteredDate !== '' && moment().isAfter(enteredDate, 'day')) {
     err.push('Start Date Must be in the Future')
@@ -129,12 +121,12 @@ function checkDate (startDate) {
   return err
 }
 
-function checkDuration (duration) {
+function checkDuration (duration: HTMLInputElement) {
   // Must be between 1 and 30
-  const err = []
-  const value = duration.value
+  const err: string[] = []
+  const value: number = parseInt(duration.value)
 
-  if (value === '') {
+  if (duration.value === '') {
     return err
   }
 
@@ -146,24 +138,24 @@ function checkDuration (duration) {
   return err
 }
 
-function checkCCV (ccv) {
+function checkCCV (ccv: HTMLInputElement) {
   // Only 3 digit numbers
-  const err = []
-  const value = ccv.value
+  const err: string[] = []
+  const value: number = parseInt(ccv.value)
 
-  if (value === '') {
+  if (ccv.value === '') {
     return err
   }
-  if (isNaN(value) || value.length !== 3) {
+  if (isNaN(value) || ccv.value.length !== 3) {
     err.push('CCV Must be a 3-Digit Numerical Value')
     badEntryClass(ccv)
   }
   return err
 }
 
-function checkCreditCard (creditCard) {
-  const err = []
-  const value = creditCard.value.replace(/\s+/g, '')
+function checkCreditCard (creditCard: HTMLInputElement) {
+  const err: string[] = []
+  const value: string = creditCard.value.replace(/\s+/g, '')
   if (value === '') {
     return err
   }
@@ -176,10 +168,10 @@ function checkCreditCard (creditCard) {
   return err
 }
 
-function checkExpiration (expiration) {
+function checkExpiration (expiration: HTMLInputElement) {
   // Must be a valid month and year, Date must not be in past
-  const err = []
-  const value = expiration.value
+  const err: string[] = []
+  const value: string = expiration.value
   const regEx = new RegExp('^(0[1-9]|1[0-2])/?([0-9]{2})$')
 
   if (value === '') {
@@ -204,25 +196,25 @@ function checkExpiration (expiration) {
 }
 
 // MAIN VALIDATOR
-function validateForm (inputNodes) {
-  let errorAccumulator = []
+function validateForm (inputNodes: FormNodes) {
+  let errorAccumulator: string[] = []
 
   errorAccumulator = errorAccumulator.concat(
     checkEmpties(inputNodes),
-    checkYear(inputNodes.carYear),
-    checkDate(inputNodes.startDate),
-    checkDuration(inputNodes.duration),
-    checkCCV(inputNodes.ccv),
-    checkCreditCard(inputNodes.creditCard),
-    checkExpiration(inputNodes.expiration)
+    checkYear(inputNodes.carYear!),
+    checkDate(inputNodes.startDate!),
+    checkDuration(inputNodes.duration!),
+    checkCCV(inputNodes.ccv!),
+    checkCreditCard(inputNodes.creditCard!),
+    checkExpiration(inputNodes.expiration!)
   )
   return errorAccumulator
 }
 
 // CC Support Functions
-function validateCardNumber (number) {
+function validateCardNumber (number: string) {
   // Checks CC against regular expression
-  var regex = new RegExp('^[0-9]{16}$')
+  const regex = new RegExp('^[0-9]{16}$')
   if (!regex.test(number)) {
     return false
   } else {
@@ -230,11 +222,11 @@ function validateCardNumber (number) {
   }
 }
 
-function luhnCheck (val) {
+function luhnCheck (val: string) {
   // Checks to make sure that the numbers match an agreed upon pattern for credit cards (sum of odds + sum of doubled and modified evens %10 should equal 0)
-  var sum = 0
-  for (var i = 0; i < val.length; i++) {
-    var intVal = parseInt(val.substr(i, 1))
+  let sum = 0
+  for (let i = 0; i < val.length; i++) {
+    let intVal = parseInt(val.substr(i, 1))
     if (i % 2 === 0) {
       intVal *= 2
       if (intVal > 9) {
@@ -247,7 +239,7 @@ function luhnCheck (val) {
 }
 
 // COST CALCULATOR
-function calculateCost (duration, startDate) {
+function calculateCost (duration: number, startDate: string) {
   let cost = 0
   for (let i = 0; i <= duration; i++) {
     const evalDate = moment(startDate).add(i, 'd')

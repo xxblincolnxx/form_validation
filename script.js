@@ -1,3 +1,9 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const moment_1 = __importDefault(require("moment"));
 const form = document.querySelector('#form');
 if (form) {
     form.addEventListener('submit', (e) => {
@@ -22,7 +28,7 @@ if (form) {
         }
         else if (inputNodes.duration && inputNodes.startDate) {
             e.preventDefault();
-            const cost = calculateCost(inputNodes.duration.value, inputNodes.startDate.value);
+            const cost = calculateCost(parseInt(inputNodes.duration.value), inputNodes.startDate.value);
             setDisplay([`Total: $${cost}`]);
             console.log(cost);
         }
@@ -66,14 +72,14 @@ function checkEmpties(nodes) {
     return err;
 }
 function checkYear(carYear) {
-    const value = carYear.value;
-    const thisYear = moment().format('YYYY');
+    const value = parseInt(carYear.value);
+    const thisYear = (0, moment_1.default)().format('YYYY');
     const err = [];
     let msg = '';
-    if (value === '') {
+    if (carYear.value === '') {
         return err;
     }
-    if (isNaN(carYear.value)) {
+    if (isNaN(value)) {
         msg += 'Car Year Must be a Numerical Value';
     }
     else if (value < 1900 || value > parseInt(thisYear)) {
@@ -88,7 +94,7 @@ function checkYear(carYear) {
 function checkDate(startDate) {
     const err = [];
     const enteredDate = startDate.value;
-    if (enteredDate !== '' && moment().isAfter(enteredDate, 'day')) {
+    if (enteredDate !== '' && (0, moment_1.default)().isAfter(enteredDate, 'day')) {
         err.push('Start Date Must be in the Future');
         badEntryClass(startDate);
         console.log('Date in Past');
@@ -97,8 +103,8 @@ function checkDate(startDate) {
 }
 function checkDuration(duration) {
     const err = [];
-    const value = duration.value;
-    if (value === '') {
+    const value = parseInt(duration.value);
+    if (duration.value === '') {
         return err;
     }
     if (value < 1 || value > 30) {
@@ -109,11 +115,11 @@ function checkDuration(duration) {
 }
 function checkCCV(ccv) {
     const err = [];
-    const value = ccv.value;
-    if (value === '') {
+    const value = parseInt(ccv.value);
+    if (ccv.value === '') {
         return err;
     }
-    if (isNaN(value) || value.length !== 3) {
+    if (isNaN(value) || ccv.value.length !== 3) {
         err.push('CCV Must be a 3-Digit Numerical Value');
         badEntryClass(ccv);
     }
@@ -144,8 +150,8 @@ function checkExpiration(expiration) {
         return err;
     }
     const splitValue = value.split('/');
-    const expDateMoment = moment(`${splitValue[0]} ${splitValue[1]}`, 'MM YY');
-    if (moment().isAfter(expDateMoment, 'month')) {
+    const expDateMoment = (0, moment_1.default)(`${splitValue[0]} ${splitValue[1]}`, 'MM YY');
+    if ((0, moment_1.default)().isAfter(expDateMoment, 'month')) {
         badEntryClass(expiration);
         err.push('Credit Card Expired');
     }
@@ -157,7 +163,7 @@ function validateForm(inputNodes) {
     return errorAccumulator;
 }
 function validateCardNumber(number) {
-    var regex = new RegExp('^[0-9]{16}$');
+    const regex = new RegExp('^[0-9]{16}$');
     if (!regex.test(number)) {
         return false;
     }
@@ -166,9 +172,9 @@ function validateCardNumber(number) {
     }
 }
 function luhnCheck(val) {
-    var sum = 0;
-    for (var i = 0; i < val.length; i++) {
-        var intVal = parseInt(val.substr(i, 1));
+    let sum = 0;
+    for (let i = 0; i < val.length; i++) {
+        let intVal = parseInt(val.substr(i, 1));
         if (i % 2 === 0) {
             intVal *= 2;
             if (intVal > 9) {
@@ -182,14 +188,14 @@ function luhnCheck(val) {
 function calculateCost(duration, startDate) {
     let cost = 0;
     for (let i = 0; i <= duration; i++) {
-        const evalDate = moment(startDate).add(i, 'd');
-        if (moment(evalDate).format('d') === '0' || moment(evalDate).format('d') === '6') {
+        const evalDate = (0, moment_1.default)(startDate).add(i, 'd');
+        if ((0, moment_1.default)(evalDate).format('d') === '0' || (0, moment_1.default)(evalDate).format('d') === '6') {
             cost += 7;
-            console.log(`the weekend day is ${moment(evalDate).format('dddd')}`);
+            console.log(`the weekend day is ${(0, moment_1.default)(evalDate).format('dddd')}`);
         }
         else {
             cost += 5;
-            console.log(`the weekday is ${moment(evalDate).format('dddd')}`);
+            console.log(`the weekday is ${(0, moment_1.default)(evalDate).format('dddd')}`);
         }
     }
     return cost;
