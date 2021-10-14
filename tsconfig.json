@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
     "rootDir": "./src",
-    "target": "es2017",
+    "target": "es6",
     "module": "commonjs",
     "lib": ["dom", "es6", "es2017", "esnext.asynciterable"],
     "skipLibCheck": true,
     "sourceMap": true,
     "outDir": "./",
     "moduleResolution": "node",
+    "downlevelIteration": true,
     "removeComments": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -22,7 +23,10 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "moment": ["./node_modules/moment"]
+    }
   },
   "exclude": ["node_modules"],
   "include": ["./src/**/*.ts"],
